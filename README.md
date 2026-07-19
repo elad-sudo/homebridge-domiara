@@ -74,6 +74,10 @@ Add the platform via the Homebridge UI (a config form is provided), or in `confi
 
 Restart Homebridge. Your devices appear in the Home app under the Homebridge bridge.
 
+> **Tip — skip Apple's room-assignment wizard:** the Domiara iOS app (Settings → Apple Home rooms)
+> imports your TouchWand rooms into Apple Home and files every bridged device into the right one,
+> in one tap. Requires this plugin ≥ 0.3.0.
+
 ### Filtering devices
 
 By default (since 0.2.0) the plugin **hides unconfigured devices** — endpoints that still carry
@@ -104,11 +108,3 @@ Hidden devices are removed from Apple Home automatically on the next sync.
 ## License
 
 MIT.
-
-## Development
-
-Plugin development happens in the main (private) Domiara monorepo — the TouchWand transport
-engine that powers this plugin is shared with the Domiara app and is bundled into `dist/index.js`
-at release time. This repository mirrors the plugin sources (`src/`) and every released bundle.
-Issues and feature requests are very welcome here; PRs against `src/` are applied upstream and
-released through the normal pipeline.
