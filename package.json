@@ -1,0 +1,48 @@
+{
+  "name": "homebridge-domiara",
+  "version": "0.2.1",
+  "description": "Homebridge plugin that brings TouchWand smart-home devices to Apple Home + Siri, using Domiara's field-tested LAN transport. Independent, third-party — not affiliated with TouchWand.",
+  "license": "MIT",
+  "author": "Secnox Ltd (https://domiara.com)",
+  "homepage": "https://domiara.com",
+  "bugs": {
+    "url": "https://github.com/elad-sudo/homebridge-domiara/issues",
+    "email": "info@secnox.com"
+  },
+  "keywords": [
+    "homebridge-plugin",
+    "touchwand",
+    "domiara",
+    "homekit",
+    "smart-home",
+    "wanderfull"
+  ],
+  "main": "dist/index.js",
+  "files": [
+    "dist",
+    "config.schema.json",
+    "README.md"
+  ],
+  "engines": {
+    "homebridge": ">=1.6.0 || ^2.0.0",
+    "node": ">=18.0.0"
+  },
+  "scripts": {
+    "typecheck": "tsc --noEmit",
+    "build": "esbuild src/index.ts --bundle --platform=node --target=node18 --format=cjs --outfile=dist/index.js --external:homebridge"
+  },
+  "dependencies": {
+    "ws": "^8.18.0"
+  },
+  "devDependencies": {
+    "@types/node": "^22.5.0",
+    "@types/ws": "^8.5.12",
+    "esbuild": "^0.23.1",
+    "homebridge": "^1.8.4",
+    "typescript": "^5.5.4"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/elad-sudo/homebridge-domiara.git"
+  }
+}

@@ -1,0 +1,76 @@
+{
+  "pluginAlias": "Domiara",
+  "pluginType": "platform",
+  "singular": true,
+  "headerDisplay": "Brings your TouchWand smart-home devices to Apple Home + Siri. Independent, third-party — not affiliated with, endorsed by, or sponsored by TouchWand.",
+  "footerDisplay": "The Homebridge host must be on the same LAN as your TouchWand controller.",
+  "schema": {
+    "type": "object",
+    "properties": {
+      "name": {
+        "title": "Name",
+        "type": "string",
+        "default": "Domiara",
+        "required": true
+      },
+      "host": {
+        "title": "Controller IP address (on your LAN)",
+        "type": "string",
+        "required": true,
+        "placeholder": "192.168.1.50",
+        "description": "The local IP of your TouchWand controller."
+      },
+      "port": {
+        "title": "Port",
+        "type": "integer",
+        "default": 80
+      },
+      "username": {
+        "title": "TouchWand username",
+        "type": "string",
+        "required": true
+      },
+      "password": {
+        "title": "TouchWand password",
+        "type": "string",
+        "required": true,
+        "x-schema-form": { "type": "password" }
+      },
+      "includeScenes": {
+        "title": "Expose scenes as switches",
+        "type": "boolean",
+        "default": true
+      },
+      "hideUnconfigured": {
+        "title": "Hide unconfigured devices",
+        "type": "boolean",
+        "default": true,
+        "description": "Skip devices that still carry their auto-generated controller name (e.g. \"10.11 Switch\") — endpoints nobody named are usually unused. Turn off to expose everything."
+      },
+      "include": {
+        "title": "Always include (device names or ids)",
+        "type": "array",
+        "items": { "type": "string" },
+        "description": "Devices to expose even if they look unconfigured. Exact name (case-insensitive), device id, or a pattern with * wildcards."
+      },
+      "exclude": {
+        "title": "Always exclude (device names or ids)",
+        "type": "array",
+        "items": { "type": "string" },
+        "description": "Devices to hide from Apple Home. Exact name (case-insensitive), device id, or a pattern with * wildcards (e.g. '*spare*')."
+      },
+      "refreshSeconds": {
+        "title": "State refresh interval (seconds)",
+        "type": "integer",
+        "default": 60,
+        "minimum": 15
+      },
+      "allowNonPrivateHost": {
+        "title": "Allow a non-private controller host (advanced)",
+        "type": "boolean",
+        "default": false,
+        "description": "Leave off. Only enable if your controller is reached via a non-LAN address you trust."
+      }
+    }
+  }
+}
