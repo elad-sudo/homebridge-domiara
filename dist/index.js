@@ -4336,10 +4336,10 @@ function hkName(raw) {
 function serial(id) {
   return `tw-${id}`;
 }
-function accessoryInfo(p, acc, device) {
+function accessoryInfo(p, acc, device, opts) {
   const { Service, Characteristic } = p;
   const info = acc.getService(Service.AccessoryInformation) ?? acc.addService(Service.AccessoryInformation);
-  info.setCharacteristic(Characteristic.Manufacturer, "Domiara (TouchWand)").setCharacteristic(Characteristic.Model, device.type || "device").setCharacteristic(Characteristic.Name, hkName(device.name)).setCharacteristic(Characteristic.SerialNumber, serial(device.id));
+  info.setCharacteristic(Characteristic.Manufacturer, "Domiara (TouchWand)").setCharacteristic(Characteristic.Model, opts?.model ?? `${device.type || "device"} tw-${device.id}`).setCharacteristic(Characteristic.Name, hkName(device.name)).setCharacteristic(Characteristic.SerialNumber, opts?.serial ?? serial(device.id));
 }
 function batteryService(p, acc, device) {
   if (device.state.batteryLevel == null) return null;
@@ -4459,7 +4459,10 @@ function configureDeviceAccessory(p, acc, device) {
 }
 function configureSceneAccessory(p, acc, scene) {
   const { Service, Characteristic } = p;
-  accessoryInfo(p, acc, { id: scene.id, type: "switch", name: scene.name, state: {} });
+  accessoryInfo(p, acc, { id: scene.id, type: "switch", name: scene.name, state: {} }, {
+    serial: `tw-s-${scene.id}`,
+    model: "scene"
+  });
   const svc = acc.getService(Service.Switch) ?? acc.addService(Service.Switch, hkName(scene.name));
   svc.getCharacteristic(Characteristic.On).onGet(() => false).onSet((v) => {
     if (v) {

@@ -23,14 +23,22 @@ function serial(id: string): string {
   return `tw-${id}`;
 }
 
-function accessoryInfo(p: DomiaraPlatform, acc: PlatformAccessory, device: Device): void {
+function accessoryInfo(
+  p: DomiaraPlatform,
+  acc: PlatformAccessory,
+  device: Device,
+  opts?: { serial?: string; model?: string },
+): void {
   const { Service, Characteristic } = p;
   const info = acc.getService(Service.AccessoryInformation) ?? acc.addService(Service.AccessoryInformation);
   info
     .setCharacteristic(Characteristic.Manufacturer, 'Domiara (TouchWand)')
-    .setCharacteristic(Characteristic.Model, device.type || 'device')
+    // Model doubles as a read-free id carrier ("<type> tw-<id>") so the Domiara app can
+    // match bridged accessories without characteristic reads (HMAccessory.model is a
+    // supported property; SerialNumber reads are deprecated API on iOS).
+    .setCharacteristic(Characteristic.Model, opts?.model ?? `${device.type || 'device'} tw-${device.id}`)
     .setCharacteristic(Characteristic.Name, hkName(device.name))
-    .setCharacteristic(Characteristic.SerialNumber, serial(device.id));
+    .setCharacteristic(Characteristic.SerialNumber, opts?.serial ?? serial(device.id));
 }
 
 function batteryService(p: DomiaraPlatform, acc: PlatformAccessory, device: Device): AccessoryUpdater | null {
@@ -196,7 +204,12 @@ export function configureDeviceAccessory(
 /** A scene → a stateless HomeKit switch that runs the scenario and springs back off. */
 export function configureSceneAccessory(p: DomiaraPlatform, acc: PlatformAccessory, scene: Scenario): void {
   const { Service, Characteristic } = p;
-  accessoryInfo(p, acc, { id: scene.id, type: 'switch', name: scene.name, state: {} } as unknown as Device);
+  // Scenes get their own serial namespace (tw-s-*) so scene ids can never collide with
+  // device ids when the app matches accessories; model carries no tw- device pattern.
+  accessoryInfo(p, acc, { id: scene.id, type: 'switch', name: scene.name, state: {} } as unknown as Device, {
+    serial: `tw-s-${scene.id}`,
+    model: 'scene',
+  });
   const svc = acc.getService(Service.Switch) ?? acc.addService(Service.Switch, hkName(scene.name));
   svc
     .getCharacteristic(Characteristic.On)

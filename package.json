@@ -1,6 +1,6 @@
 {
   "name": "homebridge-domiara",
-  "version": "0.2.1",
+  "version": "0.3.0",
   "description": "Homebridge plugin that brings TouchWand smart-home devices to Apple Home + Siri, using Domiara's field-tested LAN transport. Independent, third-party — not affiliated with TouchWand.",
   "license": "MIT",
   "author": "Secnox Ltd (https://domiara.com)",
